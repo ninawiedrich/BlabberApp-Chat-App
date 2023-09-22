@@ -20,14 +20,14 @@ const Start = ({ navigation }) => {
   const bgColors1 = {
     black: "#000000",
     darkGray: "#505050",
-    purple: "#9871EB",
+    white: "#FFFFFF",
     pink: "#FD77FF",
   };
   const bgColors2 = {
     darkGreen: "#276757",
     lightGreen: "#50897A",
-    yellowOrange: "#FFC966",
     yellowGreen: "#90EE90",
+    white: "#FFFFFF"
   };
 
   return (
@@ -94,9 +94,9 @@ const Start = ({ navigation }) => {
             <TouchableOpacity
               style={[
                 styles.colorSelect__dot,
-                { backgroundColor: background === "background1" ? bgColors1.purple : bgColors2.yellowOrange },
+                { backgroundColor: background === "background1" ? bgColors1.white : bgColors2.white },
               ]}
-              onPress={() => setColor(background === "background1" ? bgColors1.purple : bgColors2.yellowOrange)}
+              onPress={() => setColor(background === "background1" ? bgColors1.white : bgColors2.white)}
             />
             <TouchableOpacity
               style={[
@@ -112,7 +112,7 @@ const Start = ({ navigation }) => {
           style={styles.fauxButton}
           onPress={() => {
             if (name) {
-              navigation.navigate("Chat", { name, color });
+              navigation.navigate("Chat", { name, color, background });
             } else {
               Alert.alert("Username is required!");
             }
@@ -122,6 +122,7 @@ const Start = ({ navigation }) => {
             Start Chatting
           </Text>
         </TouchableOpacity>
+        {Platform.OS === "ios"?<KeyboardAvoidingView behavior="padding" />: null}
       </View>
     </ImageBackground>
   );

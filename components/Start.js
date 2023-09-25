@@ -8,15 +8,34 @@ import {
   Text,
   TextInput,
   Alert,
+  Platform,
+  KeyboardAvoidingView,
 } from "react-native";
+import { getAuth, signInAnonymously } from "firebase/auth";
 
 const Start = ({ navigation }) => {
-  // State variables to hold user input and selected options
+  const auth = getAuth();
+
+  const userSignIn = () => {
+    signInAnonymously(auth)
+      //get result from promise with temp user data
+      .then((result) => {
+          if (result.user.uid) {
+            navigation.navigate("Chat", { userID: result.user.uid, name: name, color: color });
+            Alert.alert("Signed in Successfully!");
+          } else {
+            Alert.alert("Something went wrong, try again!");
+          }
+        })
+        .catch((error) => {
+          Alert.alert("We could not sign you in. Try again later");
+        });
+    };
+
   const [name, setName] = useState("");
   const [color, setColor] = useState("#474056");
   const [background, setBackground] = useState("background1");
 
-  // Define color palettes for two different backgrounds
   const bgColors1 = {
     black: "#000000",
     darkGray: "#505050",
@@ -27,12 +46,11 @@ const Start = ({ navigation }) => {
     darkGreen: "#276757",
     lightGreen: "#50897A",
     yellowGreen: "#90EE90",
-    white: "#FFFFFF"
+    white: "#FFFFFF",
   };
 
   return (
     <ImageBackground
-      // Dynamically set the background image based on user selection
       source={
         background === "background1"
           ? require("../assets/background-chat-grey.jpg")
@@ -50,7 +68,6 @@ const Start = ({ navigation }) => {
           placeholderTextColor="#757083"
           backgroundColor="#fff"
         />
-        {/* Section for selecting background */}
         <View style={styles.backgroundSelect}>
           <Text style={styles.backgroundSelect__text}>
             Choose your background:
@@ -70,13 +87,11 @@ const Start = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         </View>
-        {/* Section for selecting color */}
         <View style={styles.colorSelect}>
           <Text style={styles.backgroundSelect__text}>
             Choose your background color:
           </Text>
           <View style={styles.colorSelect__dotsWrapper}>
-            {/* Rendering color dots and setting color on press */}
             <TouchableOpacity
               style={[
                 styles.colorSelect__dot,
@@ -107,34 +122,21 @@ const Start = ({ navigation }) => {
             />
           </View>
         </View>
-        {/* Start Chatting Button */}
-        <TouchableOpacity
-          style={styles.fauxButton}
-          onPress={() => {
-            if (name) {
-              navigation.navigate("Chat", { name, color, background });
-            } else {
-              Alert.alert("Username is required!");
-            }
-          }}
-        >
-          <Text style={[styles.colorSelect__text, styles.fauxButton__text]}>
-            Start Chatting
-          </Text>
+        <TouchableOpacity style={styles.fauxButton} onPress={userSignIn}>
+          <Text style={styles.fauxButton__text}>Start Chatting</Text>
         </TouchableOpacity>
-        {Platform.OS === "ios"?<KeyboardAvoidingView behavior="padding" />: null}
+        {Platform.OS === "ios" ? <KeyboardAvoidingView behavior="padding" /> : null}
       </View>
     </ImageBackground>
   );
 };
 
-// Styling for the component
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "flex-end", 
+    justifyContent: "flex-end",
     alignItems: "center",
-    paddingBottom: 50, 
+    paddingBottom: 50,
   },
   innerContainer: {
     width: "88%",
@@ -147,7 +149,7 @@ const styles = StyleSheet.create({
     fontSize: 45,
     fontWeight: "600",
     color: "white",
-    textShadowColor: "black", 
+    textShadowColor: "black",
     textShadowOffset: { width: -5, height: 5 },
     textShadowRadius: 1,
     marginBottom: 20,
@@ -172,7 +174,7 @@ const styles = StyleSheet.create({
   },
   colorSelect__dotsWrapper: {
     flexDirection: "row",
-    marginTop: 10, 
+    marginTop: 10,
   },
   colorSelect__dot: {
     width: 40,

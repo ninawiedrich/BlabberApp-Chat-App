@@ -4,11 +4,31 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Start from './components/Start';
 import Chat from './components/Chat';
 
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+
+
 
 // Create the navigator
 const Stack = createNativeStackNavigator();
 
 const App = () => {
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDJ5BBalVDQ84R0v_1QgBJRf5L7sC_QBg8",
+    authDomain: "blabberapp-b085b.firebaseapp.com",
+    projectId: "blabberapp-b085b",
+    storageBucket: "blabberapp-b085b.appspot.com",
+    messagingSenderId: "79008936575",
+    appId: "1:79008936575:web:a5bbfe8e46780b08cf054a",
+    measurementId: "G-SXK08H6YMV"
+  };
+
+    // initialize Firebase and Firebase Storage handlers
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+
   return (
     <NavigationContainer>
             <Stack.Navigator
@@ -19,9 +39,9 @@ const App = () => {
           component={Start}
         />
         <Stack.Screen
-          name="Chat"
-          component={Chat}
-        />
+          name="Chat">
+          {props => <Chat db={db} {...props} />}
+          </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );

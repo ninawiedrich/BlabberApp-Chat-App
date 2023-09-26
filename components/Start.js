@@ -14,14 +14,16 @@ import {
 import { getAuth, signInAnonymously } from "firebase/auth";
 
 const Start = ({ navigation }) => {
+  // initialize Firebase auth handler
   const auth = getAuth();
 
+  // sign in anonymously
   const userSignIn = () => {
     signInAnonymously(auth)
       //get result from promise with temp user data
       .then((result) => {
           if (result.user.uid) {
-            navigation.navigate("Chat", { userID: result.user.uid, name: name, color: color });
+            navigation.navigate("Chat", { userID: result.user.uid, name: name, color: color, background: background });
             Alert.alert("Signed in Successfully!");
           } else {
             Alert.alert("Something went wrong, try again!");

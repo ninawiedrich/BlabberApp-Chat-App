@@ -1,12 +1,15 @@
-import { StyleSheet, View, Alert, KeyboardAvoidingView, Platform } from "react-native";
 import { useEffect, useState } from "react";
+import { StyleSheet, View, Alert, KeyboardAvoidingView, Platform } from "react-native";
 import { GiftedChat, Bubble, InputToolbar } from "react-native-gifted-chat";
 import { addDoc, collection, onSnapshot, query, orderBy } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import CustomActions from "./CustomActions";
+import MapView from 'react-native-maps'
 
-const Chat = ({ db, route, navigation, isConnected }) => {
+const Chat = ({ db, route, navigation, isConnected, storage }) => {
   const { name, color, background, userID } = route.params;
   const [messages, setMessages] = useState([]);
+
 
   // Set the navigation title to the user's name
   useEffect(() => {
@@ -77,6 +80,11 @@ const Chat = ({ db, route, navigation, isConnected }) => {
     return <Bubble {...props} wrapperStyle={wrapperStyle} textStyle={{ right: { color: '#FFFFFF' }, left: { color: '#FFFFFF' } }} />;
   };
 
+  // Customize the appearance of the action button
+  const renderCustomActions = (props) => {
+    return <CustomActions storage={storage} userID={userID} {...props} />;
+  };
+
   // Render InputToolbar based on connection status
   const renderInputToolbar = (props) => {
     if (isConnected === true) {
@@ -89,6 +97,24 @@ const Chat = ({ db, route, navigation, isConnected }) => {
     addDoc(collection(db, "messages"), newMessages[0]);
   };
 
+  const renderCustomView = (props) => {
+    const { currentMessage } = props;
+    if (currentMessage.location) {
+      return (
+        <MapView
+          style={{ width: 150, height: 100, borderRadius: 13, margin: 3 }}
+          region={{
+            latitude: currentMessage.location.latitude,
+            longitude: currentMessage.location.longitude,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+        />
+      );
+    }
+    return null;
+  };
+
   return (
     <View style={[styles.container, { backgroundColor: color }]}>
       <GiftedChat
@@ -97,6 +123,8 @@ const Chat = ({ db, route, navigation, isConnected }) => {
         renderBubble={renderBubble}
         renderInputToolbar={renderInputToolbar}
         user={{ _id: userID, name: name }}
+        renderActions={renderCustomActions}
+        renderCustomView={renderCustomView}
       />
       {Platform.OS === "android" ? <KeyboardAvoidingView behavior="height" /> : null}
     </View>

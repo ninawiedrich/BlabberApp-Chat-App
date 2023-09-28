@@ -3,18 +3,14 @@
 BlabberApp is a vibrant and user-friendly mobile chat application designed to provide a seamless communication experience. It allows users to engage in lively conversations, share images and locations, and enjoy a rich, interactive interface. Developed with React Native and integrated with Google Firestore Database, BlabberApp is optimized for both Android and iOS, offering real-time chat functionalities and offline message access, making it a versatile tool for staying connected anytime, anywhere.
 
 ## Table of Contents
-- [Description](#description)
-- [Objective](#objective)
 - [Features](#features)
-- [Technical Requirements](#technical-requirements)
+- [Technologies Used](#technologies-used)
+- [Setup and Installation](#setup-and-installation)
 - [Usage](#usage)
+- [Run the App](#run-the-app)
 - [Contributions](#contributions)
-
-## Description
-BlabberApp is a mobile chat application built using React Native, allowing users to communicate with friends, family, or other students on this course. The app provides a user-friendly chat interface with options to share images and location.
-
-## Objective
-To build a high-quality, user-friendly chat app for mobile devices using React Native, Expo, and Google Firestore Database, demonstrating proficiency in JavaScript mobile development.
+- [Feedback](#feedback)
+- [Acknowledgements](#acknowledgements)
 
 ## Features
 - **User Authentication:** Anonymous authentication via Google Firebase.
@@ -24,18 +20,46 @@ To build a high-quality, user-friendly chat app for mobile devices using React N
 - **Location Sharing:** Users can share their current location in a map view.
 - **Accessibility:** The app is compatible with screen readers for users with visual impairments.
 
-## Technical Requirements
-- Developed using React Native and Expo.
-- Styled according to given screen design specifications.
-- Conversations stored in Google Firestore Database and locally using asyncStorage.
-- Images stored in Firebase Cloud Storage.
-- Utilizes the Gifted Chat library for chat interface and functionality.
+## Technologies Used
+- React Native
+- Expo
+- Google Firestore DB
+- Firebase Cloud Storage
+- React Native Gifted Chat Library
+- AsyncStorage for offline caching
+- Expo ImagePicker & MediaLibrary
+
+## Setup and Installation
+1. **Development Environment:**
+   - Install [Expo CLI](https://expo.dev/): `npm install -g expo-cli`
+   - Set up [Android Studio](https://docs.expo.dev/workflow/android-studio-emulator/) for Android emulation.
+
+2. **Database Configuration:**
+   - Create a new project in [Firebase Console](https://console.firebase.google.com/).
+   - Configure Firestore Database and Firebase Authentication.
+   - Replace the Firebase configuration in the project with your Firebase project credentials.
+
+3. **Dependencies Installation:**
+   To install the necessary dependencies, run the following commands:
+   ```sh
+   npm install @react-native-async-storage/async-storage
+   npm install @react-native-community/netinfo
+   npm install @react-navigation/native
+   npm install @react-navigation/native-stack
+   npm install expo
+   npm install firebase
+   npm install react-native
+   npm install react-native-gifted-chat
+   npm install react-native-safe-area-context
+   npm install react-native-screens
+   npm install expo-image-picker
+   npm install expo-location
+   npm install react-native-maps
 
 ## Usage
 To use BlabberApp, follow the steps below:
-
 1. **Start the App:**
-   - Open BlabberApp on your mobile device.
+   - Run `npx expo start` to start the app.
    - Enter your name and choose a background color for the chat screen.
 
 2. **Join the Chat Room:**
@@ -58,3 +82,14 @@ To use BlabberApp, follow the steps below:
 7. **Accessibility:**
    - BlabberApp is compatible with screen readers for users with visual impairments.
 
+## Contributions
+Contributions to BlabberApp are always welcome. If you have any suggestions, improvements, or bug fixes, please feel free to submit a pull request.
+
+## Feedback
+If you have any feedback or inquiries, please reach out to [Your Email](mailto:nina.wiedrich@gmail.com).
+
+## Acknowledgements
+- [React Native](https://reactnative.dev/)
+- [Expo](https://expo.dev/)
+- [Firebase](https://firebase.google.com/)
+- [React Native Gifted Chat](https://github.com/FaridSafi/react-native-gifted-chat)

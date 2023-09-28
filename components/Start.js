@@ -22,17 +22,22 @@ const Start = ({ navigation }) => {
     signInAnonymously(auth)
       //get result from promise with temp user data
       .then((result) => {
-          if (result.user.uid) {
-            navigation.navigate("Chat", { userID: result.user.uid, name: name, color: color, background: background });
-            Alert.alert("Signed in Successfully!");
-          } else {
-            Alert.alert("Something went wrong, try again!");
-          }
-        })
-        .catch((error) => {
-          Alert.alert("We could not sign you in. Try again later");
-        });
-    };
+        if (result.user.uid) {
+          navigation.navigate("Chat", {
+            userID: result.user.uid,
+            name: name,
+            color: color,
+            background: background,
+          });
+          Alert.alert("Signed in Successfully!");
+        } else {
+          Alert.alert("Something went wrong, try again!");
+        }
+      })
+      .catch((error) => {
+        Alert.alert("We could not sign you in. Try again later");
+      });
+  };
 
   const [name, setName] = useState("");
   const [color, setColor] = useState("#474056");
@@ -97,37 +102,83 @@ const Start = ({ navigation }) => {
             <TouchableOpacity
               style={[
                 styles.colorSelect__dot,
-                { backgroundColor: background === "background1" ? bgColors1.black : bgColors2.darkGreen },
+                {
+                  backgroundColor:
+                    background === "background1"
+                      ? bgColors1.black
+                      : bgColors2.darkGreen,
+                },
               ]}
-              onPress={() => setColor(background === "background1" ? bgColors1.black : bgColors2.darkGreen)}
+              onPress={() =>
+                setColor(
+                  background === "background1"
+                    ? bgColors1.black
+                    : bgColors2.darkGreen
+                )
+              }
             />
             <TouchableOpacity
               style={[
                 styles.colorSelect__dot,
-                { backgroundColor: background === "background1" ? bgColors1.darkGray : bgColors2.lightGreen },
+                {
+                  backgroundColor:
+                    background === "background1"
+                      ? bgColors1.darkGray
+                      : bgColors2.lightGreen,
+                },
               ]}
-              onPress={() => setColor(background === "background1" ? bgColors1.darkGray : bgColors2.lightGreen)}
+              onPress={() =>
+                setColor(
+                  background === "background1"
+                    ? bgColors1.darkGray
+                    : bgColors2.lightGreen
+                )
+              }
             />
             <TouchableOpacity
               style={[
                 styles.colorSelect__dot,
-                { backgroundColor: background === "background1" ? bgColors1.white : bgColors2.white },
+                {
+                  backgroundColor:
+                    background === "background1"
+                      ? bgColors1.white
+                      : bgColors2.white,
+                },
               ]}
-              onPress={() => setColor(background === "background1" ? bgColors1.white : bgColors2.white)}
+              onPress={() =>
+                setColor(
+                  background === "background1"
+                    ? bgColors1.white
+                    : bgColors2.white
+                )
+              }
             />
             <TouchableOpacity
               style={[
                 styles.colorSelect__dot,
-                { backgroundColor: background === "background1" ? bgColors1.pink : bgColors2.yellowGreen },
+                {
+                  backgroundColor:
+                    background === "background1"
+                      ? bgColors1.pink
+                      : bgColors2.yellowGreen,
+                },
               ]}
-              onPress={() => setColor(background === "background1" ? bgColors1.pink : bgColors2.yellowGreen)}
+              onPress={() =>
+                setColor(
+                  background === "background1"
+                    ? bgColors1.pink
+                    : bgColors2.yellowGreen
+                )
+              }
             />
           </View>
         </View>
         <TouchableOpacity style={styles.fauxButton} onPress={userSignIn}>
           <Text style={styles.fauxButton__text}>Start Chatting</Text>
         </TouchableOpacity>
-        {Platform.OS === "ios" ? <KeyboardAvoidingView behavior="padding" /> : null}
+        {Platform.OS === "ios" ? (
+          <KeyboardAvoidingView behavior="padding" />
+        ) : null}
       </View>
     </ImageBackground>
   );

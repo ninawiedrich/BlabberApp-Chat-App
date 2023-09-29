@@ -4,43 +4,30 @@ import * as ImagePicker from "expo-image-picker";
 import * as Location from "expo-location";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
-const CustomActions = ({
-  wrapperStyle,
-  iconTextStyle,
-  userID,
-  storage,
-  onSend,
-}) => {
+const CustomActions = ({ wrapperStyle, iconTextStyle, userID, storage, onSend }) => {
   const actionSheet = useActionSheet();
 
+  // Function to handle the action press and show the action sheet
   const onActionPress = () => {
-    const options = [
-      "choose from Library",
-      "Take photo",
-      "send Location",
-      "cancel",
-    ];
+    const options = ["choose from Library", "Take photo", "send Location", "cancel"];
     const cancelButtonIndex = options.length - 1;
-
-    actionSheet.showActionSheetWithOptions(
-      { options, cancelButtonIndex },
-      async (buttonIndex) => {
-        switch (buttonIndex) {
-          case 0:
-            pickImage();
-            return;
-          case 1:
-            takePhoto();
-            return;
-          case 2:
-            getLocation();
-            return;
-          default:
-        }
+    actionSheet.showActionSheetWithOptions({ options, cancelButtonIndex }, async (buttonIndex) => {
+      switch (buttonIndex) {
+        case 0:
+          pickImage();
+          return;
+        case 1:
+          takePhoto();
+          return;
+        case 2:
+          getLocation();
+          return;
+        default:
       }
-    );
+    });
   };
 
+  // Function to pick an image from the library
   const pickImage = async () => {
     let permissions = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (permissions?.granted) {
@@ -50,6 +37,7 @@ const CustomActions = ({
     }
   };
 
+  // Function to take a photo
   const takePhoto = async () => {
     let permissions = await ImagePicker.requestCameraPermissionsAsync();
     if (permissions?.granted) {
@@ -59,27 +47,25 @@ const CustomActions = ({
     }
   };
 
+  // Function to get the current location
   const getLocation = async () => {
     let permissions = await Location.requestForegroundPermissionsAsync();
     if (permissions?.granted) {
-      let location = await Location.getCurrentPositionAsync({accuracy: Location.Accuracy.High});
+      let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.High });
       if (location) {
-        onSend({
-          location: {
-            longitude: location.coords.longitude,
-            latitude: location.coords.latitude,
-          },
-        });
+        onSend({ location: { longitude: location.coords.longitude, latitude: location.coords.latitude } });
       } else Alert.alert("Something went wrong, try again!");
     } else Alert.alert("Permission not granted");
   };
 
+  // Function to generate a unique reference string for the image
   const generateReference = (uri) => {
     const timeStamp = new Date().getTime();
     const imageName = uri.split("/")[uri.split("/").length - 1];
     return `${userID}-${timeStamp}-${imageName}`;
   };
 
+  // Function to convert the image file to a blob
   const convertFileToBlob = async (uri) => {
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
@@ -90,12 +76,12 @@ const CustomActions = ({
         reject(new Error("XHR request failed"));
       };
       xhr.responseType = "blob";
-
       xhr.open("GET", uri, true);
       xhr.send();
     });
   };
 
+  // Function to upload the image and send the picture
   const uploadAndSendPic = async (imageURI) => {
     const uniqueRefString = generateReference(imageURI);
     const newUploadRef = ref(storage, uniqueRefString);
@@ -107,7 +93,14 @@ const CustomActions = ({
   };
 
   return (
-    <TouchableOpacity style={styles.container} onPress={onActionPress}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={onActionPress}
+      accessible={true}
+      accessibilityLabel="More options"
+      accessibilityHint="Let you choose to add or send an image or to share your location."
+      accessibilityRole="button"
+    >
       <View style={[styles.wrapper, wrapperStyle]}>
         <Text style={[styles.iconText, iconTextStyle]}>+</Text>
       </View>

@@ -82,7 +82,7 @@ const Start = ({ navigation }) => {
           accessible={true}
           accessibilityLabel="Name input field"
           accessibilityHint="Enter your name here."
-          accessibilityRole="textbox"
+          accessibilityRole="text"
         />
         <View style={styles.backgroundSelect} accessible={true} accessibilityLabel="Background selection" accessibilityRole="menu">
           <Text style={styles.backgroundSelect__text}>
